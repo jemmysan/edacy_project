@@ -18,7 +18,7 @@ const signup = async (req, res) => {
         const userExists = await User.findOne({ email });
         if (userExists) return res.status(400).json({ message: 'User already exists!' });
 
-        const hashPassword = await doHash(password, 12);
+        const hashPassword = doHash(password, 12);
         const newUser = await User.create({
             fullname,
             email, 
@@ -29,8 +29,7 @@ const signup = async (req, res) => {
         result.password = undefined
         res.status(201).json({
             success: true,
-            message : 'Your account has been created successfully',
-            result
+            message : 'Your account has been created successfully'
         });
 
     } catch(err) {
@@ -53,7 +52,6 @@ const signin = async (req, res) => {
         if (!userExists) return res.status(401).json({ message: 'User doesn\'t exists!' });
 
         const result = doHashValidation(password,userExists.password);
-        // return res.status(200).json({ message: result });
         
 
         if (!result) return res.status(401).json({ message: 'Invalid credentials!' });
@@ -91,8 +89,6 @@ const signout = async (req, res) =>{
     .status(200)
     .json({ success: true, message: 'logged out successfully' });
 };
-
-
 
 
 export {

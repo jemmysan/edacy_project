@@ -6,6 +6,9 @@ import helmet from "helmet";
 import morgan from 'morgan';
 import {errorHandler} from './middlewares/error.middleware.js'
 import authRouter from './routes/auth.router.js';
+import categoryRouter from './routes/category.router.js';
+import { bookRouter } from './routes/book.router.js';
+
 
 
 // Initialisation
@@ -24,7 +27,11 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
+
 app.use('/api/auth', authRouter);
+app.use('/api/categories', categoryRouter);
+app.use('/api/books', bookRouter);
+
 
 // Error handler
 app.use(errorHandler);

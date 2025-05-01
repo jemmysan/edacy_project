@@ -6,8 +6,7 @@ const BookSchema = mongoose.Schema({
         required: [true, "The Title is required"],
     },
     author: {
-        type: String,
-        required: [true, "The Title is required or if you don\'t know the author type unknow"],
+        type: String
     },
 
     description: {
@@ -16,16 +15,17 @@ const BookSchema = mongoose.Schema({
     },
     published_year: {
         type: Number,
-        categor
+        default : 0
     },
-    category: {
+    category_id: {
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'Category', 
-        required: true
+        default : null
     },
 
     stock: {
         type: Number,
+        default : 0
     }
 },
     {
@@ -34,5 +34,5 @@ const BookSchema = mongoose.Schema({
 )
 
 
-const Book = mongoose.model('Book', BookSchema);
+export const Book = mongoose.model('Book', BookSchema);
 

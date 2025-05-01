@@ -1,3 +1,5 @@
+// Script connexion to the database
+import 'dotenv/config';
 import mongoose from 'mongoose';
 
 const connectDB = async () =>{
