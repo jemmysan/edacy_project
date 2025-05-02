@@ -77,7 +77,7 @@ const destroy = async (req, res)=>{
 
         if(!categoryExists) return res.status(400).json({message : 'Category not found!'});
 
-        await Book.updateMany({ category: id }, { $unset: { category: null } });
+        await Book.updateMany({ category_id: id }, { $unset: { category_id: null } });
 
         await categoryExists.deleteOne();
         return res.status(200).json({message : 'Category deleted successfully!'});

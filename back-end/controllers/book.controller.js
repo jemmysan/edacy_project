@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const index = async (req, res) => {
     try {
-        const books = await Book.find();
+        const books = await Book.find().populate('category_id', 'libelle');
         return res.status(200).json({success : true, data : books})   
     } catch (error) {
         console.log(error)
@@ -70,11 +70,11 @@ const update = async (req, res) => {
             return res.status(400).json({success : false, message : 'Category Id not found'})
         }
 
-        const bookToUpdate = Book.findById(id)
+        const bookToUpdate = await Book.findById(id)
         
         if(!bookToUpdate) return res.status(400).json({message : 'Book not found!'});
 
-        await bookToUpdate.update({
+       bookToUpdate.set({
             title, 
             author,
             description,
@@ -82,6 +82,8 @@ const update = async (req, res) => {
             category_id : category_id || null, 
             stock 
         })
+
+        await bookToUpdate.save();
         return res.status(200).json({success : true, message : 'Book updated succesfully!' })
     } catch (error) {
         console.log(error)
@@ -90,8 +92,20 @@ const update = async (req, res) => {
 
 }
 
-const destroy = ()=>{
+const destroy = async (req, res)=>{
+    const {id} = req.params;
 
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(400).json({success : false, message :'Not existing Id'})
+
+    try {
+        const book = await Book.findById(id)
+        if(!book) return res.status(400).json({success: false, message: 'book not found !'});
+        await book.deleteOne();
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: 'An internal error occured!'});
+    }
 }
 
 
